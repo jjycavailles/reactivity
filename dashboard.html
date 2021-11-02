@@ -13132,7 +13132,7 @@ div#notebook {
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#hide</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## HIDE</span>
 <span class="c1">#%pip install matplotlib -qqq</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
@@ -13160,7 +13160,498 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">pickle</span> <span class="c1"># package use to save data</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Image</span>
 <span class="kn">import</span> <span class="nn">nbinteract</span> <span class="k">as</span> <span class="nn">nbi</span>
-<span class="c1">#%pip install matplotlib -qqq#%pip install pycalphad -qqqfrom plot_c_0_n_infty import *</span>
+<span class="c1">#%pip install matplotlib -qqq</span>
+<span class="o">%</span><span class="k">pip</span> install pycalphad -qqq
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/usr/lib/python3/dist-packages/secretstorage/dhcrypto.py:15: CryptographyDeprecationWarning: int_from_bytes is deprecated, use int.from_bytes instead
+  from cryptography.utils import int_from_bytes
+/usr/lib/python3/dist-packages/secretstorage/util.py:19: CryptographyDeprecationWarning: int_from_bytes is deprecated, use int.from_bytes instead
+  from cryptography.utils import int_from_bytes
+Note: you may need to restart the kernel to use updated packages.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+  </div>from plot_c_0_n_infty import *
+
+  
+
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">colors</span>
+<span class="kn">import</span> <span class="nn">matplotlib.ticker</span> <span class="k">as</span> <span class="nn">ticker</span>
+<span class="kn">from</span> <span class="nn">pycalphad.plot</span> <span class="kn">import</span> <span class="n">triangular</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+  </div>
+
+  
+
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">]</span>
+<span class="n">Label</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">]</span>
+
+
+<span class="c1"># In[3]:</span>
+
+
+<span class="k">def</span> <span class="nf">u_A_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+    <span class="n">xA</span><span class="p">,</span> <span class="n">xB</span><span class="p">,</span> <span class="n">xR</span> <span class="o">=</span> <span class="n">X</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="o">=</span> <span class="n">param</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">xA</span><span class="o">+</span><span class="n">xR</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">xA</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">alpha</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">xA</span><span class="o">+</span><span class="n">xR</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">xA</span><span class="p">)</span>
+
+
+<span class="c1"># In[4]:</span>
+
+
+<span class="k">def</span> <span class="nf">u_B_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+    <span class="n">xA</span><span class="p">,</span> <span class="n">xB</span><span class="p">,</span> <span class="n">xR</span> <span class="o">=</span> <span class="n">X</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">param</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">xB</span><span class="o">+</span><span class="n">xR</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">xB</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">alpha</span><span class="o">*</span><span class="n">l</span><span class="o">/</span><span class="p">(</span><span class="n">xB</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">h</span><span class="o">/</span><span class="p">(</span><span class="n">xB</span><span class="o">+</span><span class="n">xR</span><span class="p">)</span>
+
+
+<span class="c1"># In[5]:</span>
+
+
+<span class="k">def</span> <span class="nf">u_R_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+    <span class="n">xA</span><span class="p">,</span> <span class="n">xB</span><span class="p">,</span> <span class="n">xR</span> <span class="o">=</span> <span class="n">X</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">param</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">xA</span><span class="o">+</span><span class="n">xR</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">xB</span><span class="o">+</span><span class="n">xR</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">alpha</span><span class="o">*</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">xA</span><span class="o">+</span><span class="n">xR</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">h</span><span class="o">/</span><span class="p">(</span><span class="n">xB</span><span class="o">+</span><span class="n">xR</span><span class="p">)</span>
+
+
+<span class="c1"># In[6]:</span>
+
+
+<span class="k">def</span> <span class="nf">replicator_dynamics_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+    <span class="n">dX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">uA</span> <span class="o">=</span> <span class="n">u_A_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+    <span class="n">uB</span> <span class="o">=</span> <span class="n">u_B_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+    <span class="n">uR</span> <span class="o">=</span> <span class="n">u_R_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">uA</span><span class="p">,</span> <span class="n">uB</span><span class="p">,</span> <span class="n">uR</span><span class="p">])</span>
+    <span class="n">average</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">)</span> <span class="c1">#/ n</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">dX</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">average</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dX</span>
+
+
+<span class="c1"># In[7]:</span>
+
+
+<span class="c1"># realized</span>
+      
+<span class="k">def</span> <span class="nf">u_A</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">Xb</span><span class="p">):</span>
+    <span class="n">xA</span><span class="p">,</span> <span class="n">xB</span><span class="p">,</span> <span class="n">xR</span> <span class="o">=</span> <span class="n">X</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">param</span>
+    <span class="k">if</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">Xb</span><span class="o">-</span><span class="n">l</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">xA</span><span class="o">+</span><span class="n">xR</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">xA</span><span class="o">+</span><span class="n">xR</span><span class="p">)</span>
+    <span class="k">elif</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">Xb</span><span class="o">-</span><span class="n">h</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">xA</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">xA</span><span class="p">)</span>      
+
+<span class="k">def</span> <span class="nf">u_B</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">Xb</span><span class="p">):</span>
+    <span class="n">xA</span><span class="p">,</span> <span class="n">xB</span><span class="p">,</span> <span class="n">xR</span> <span class="o">=</span> <span class="n">X</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">param</span>
+    <span class="k">if</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">Xb</span><span class="o">-</span><span class="n">l</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">xB</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">l</span><span class="o">/</span><span class="p">(</span><span class="n">xB</span><span class="p">)</span>
+    <span class="k">elif</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">Xb</span><span class="o">-</span><span class="n">h</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">xB</span><span class="o">+</span><span class="n">xR</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">h</span><span class="o">/</span><span class="p">(</span><span class="n">xB</span><span class="o">+</span><span class="n">xR</span><span class="p">)</span>
+        
+<span class="k">def</span> <span class="nf">u_R</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">Xb</span><span class="p">):</span>
+    <span class="n">xA</span><span class="p">,</span> <span class="n">xB</span><span class="p">,</span> <span class="n">xR</span> <span class="o">=</span> <span class="n">X</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">param</span>
+    <span class="k">if</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">Xb</span><span class="o">-</span><span class="n">l</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">xA</span><span class="o">+</span><span class="n">xR</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">xA</span><span class="o">+</span><span class="n">xR</span><span class="p">)</span>
+    <span class="k">elif</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">Xb</span><span class="o">-</span><span class="n">h</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">10</span><span class="p">):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">xB</span><span class="o">+</span><span class="n">xR</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">h</span><span class="o">/</span><span class="p">(</span><span class="n">xB</span><span class="o">+</span><span class="n">xR</span><span class="p">)</span>    
+
+<span class="k">def</span> <span class="nf">replicator_dynamics</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">Xb</span><span class="p">):</span>
+    <span class="n">dX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">uA</span> <span class="o">=</span> <span class="n">u_A</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">Xb</span><span class="p">)</span>
+    <span class="n">uB</span> <span class="o">=</span> <span class="n">u_B</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">Xb</span><span class="p">)</span>
+    <span class="n">uR</span> <span class="o">=</span> <span class="n">u_R</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">Xb</span><span class="p">)</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">uA</span><span class="p">,</span> <span class="n">uB</span><span class="p">,</span> <span class="n">uR</span><span class="p">])</span>
+    <span class="n">average</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">)</span><span class="c1"># / n</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">dX</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">U</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">average</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dX</span>
+
+
+<span class="c1"># In[8]:</span>
+
+
+<span class="k">def</span> <span class="nf">RK4</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">Xb</span><span class="p">,</span> <span class="n">Xb1</span><span class="p">,</span> <span class="n">expected</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">expected</span><span class="p">):</span>
+        <span class="n">k1</span> <span class="o">=</span> <span class="n">replicator_dynamics_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+        <span class="n">k2</span> <span class="o">=</span> <span class="n">replicator_dynamics_expected</span><span class="p">(</span><span class="n">X</span><span class="o">+</span><span class="n">dt</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">k1</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+        <span class="n">k3</span> <span class="o">=</span> <span class="n">replicator_dynamics_expected</span><span class="p">(</span><span class="n">X</span><span class="o">+</span><span class="n">dt</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">k2</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+        <span class="n">k4</span> <span class="o">=</span> <span class="n">replicator_dynamics_expected</span><span class="p">(</span><span class="n">X</span><span class="o">+</span><span class="n">dt</span><span class="o">*</span><span class="n">k3</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">k1</span> <span class="o">=</span> <span class="n">replicator_dynamics</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">Xb</span><span class="p">)</span>
+        <span class="n">k2</span> <span class="o">=</span> <span class="n">replicator_dynamics</span><span class="p">(</span><span class="n">X</span><span class="o">+</span><span class="n">dt</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">k1</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">Xb</span><span class="p">)</span>
+        <span class="n">k3</span> <span class="o">=</span> <span class="n">replicator_dynamics</span><span class="p">(</span><span class="n">X</span><span class="o">+</span><span class="n">dt</span><span class="o">/</span><span class="mi">2</span><span class="o">*</span><span class="n">k2</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">Xb</span><span class="p">)</span>
+        <span class="n">k4</span> <span class="o">=</span> <span class="n">replicator_dynamics</span><span class="p">(</span><span class="n">X</span><span class="o">+</span><span class="n">dt</span><span class="o">*</span><span class="n">k3</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">Xb1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span> <span class="o">+</span> <span class="n">dt</span><span class="o">/</span><span class="mi">6</span><span class="o">*</span><span class="p">(</span><span class="n">k1</span><span class="o">+</span><span class="n">k2</span><span class="o">+</span><span class="n">k3</span><span class="o">+</span><span class="n">k4</span><span class="p">)</span>
+
+
+<span class="c1"># In[9]:</span>
+
+
+<span class="k">def</span> <span class="nf">iteration</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">XXb</span><span class="p">,</span> <span class="n">expected</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">XX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">XX</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">X0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">XX</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">RK4</span><span class="p">(</span><span class="n">XX</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">param</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">XXb</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">XXb</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">expected</span><span class="o">=</span><span class="n">expected</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">XX</span>
+
+
+<span class="c1"># In[10]:</span>
+
+
+<span class="k">def</span> <span class="nf">best_reponse</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">u_A_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">),</span> <span class="n">u_B_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">),</span> <span class="n">u_R_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">)]))</span>
+
+
+<span class="c1"># In[11]:</span>
+
+
+<span class="k">def</span> <span class="nf">worst_reponse</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">u_A_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">),</span> <span class="n">u_B_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">),</span> <span class="n">u_R_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">)]))</span>
+
+
+<span class="c1"># In[12]:</span>
+
+
+<span class="k">def</span> <span class="nf">der_best</span><span class="p">(</span><span class="n">param</span><span class="p">):</span>
+    <span class="n">nbre_points</span> <span class="o">=</span> <span class="mi">101</span>
+    <span class="n">XXR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nbre_points</span><span class="p">)</span>
+    <span class="n">XXB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nbre_points</span><span class="p">)</span>
+    <span class="n">Best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nbre_points</span><span class="p">,</span> <span class="n">nbre_points</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">Best</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NAN</span>
+    <span class="k">for</span> <span class="n">i_r</span><span class="p">,</span> <span class="n">xR</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">XXR</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i_b</span><span class="p">,</span> <span class="n">xB</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">XXB</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">xR</span><span class="o">+</span><span class="n">xB</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">xA</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">xR</span><span class="o">-</span><span class="n">xB</span>
+                <span class="n">X</span> <span class="o">=</span> <span class="n">xA</span><span class="p">,</span> <span class="n">xB</span><span class="p">,</span> <span class="n">xR</span>
+                <span class="n">Best</span><span class="p">[</span><span class="n">i_r</span><span class="p">,</span> <span class="n">i_b</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_reponse</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Best</span>
+
+
+<span class="c1"># In[13]:</span>
+
+
+<span class="k">def</span> <span class="nf">der_worst</span><span class="p">(</span><span class="n">param</span><span class="p">):</span>
+    <span class="n">nbre_points</span> <span class="o">=</span> <span class="mi">101</span>
+    <span class="n">XXR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nbre_points</span><span class="p">)</span>
+    <span class="n">XXB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nbre_points</span><span class="p">)</span>
+    <span class="n">Worst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nbre_points</span><span class="p">,</span> <span class="n">nbre_points</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">Worst</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NAN</span>
+    <span class="k">for</span> <span class="n">i_r</span><span class="p">,</span> <span class="n">xR</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">XXR</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i_b</span><span class="p">,</span> <span class="n">xB</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">XXB</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">xR</span><span class="o">+</span><span class="n">xB</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">xA</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">xR</span><span class="o">-</span><span class="n">xB</span>
+                <span class="n">X</span> <span class="o">=</span> <span class="n">xA</span><span class="p">,</span> <span class="n">xB</span><span class="p">,</span> <span class="n">xR</span>
+                <span class="n">Worst</span><span class="p">[</span><span class="n">i_r</span><span class="p">,</span> <span class="n">i_b</span><span class="p">]</span> <span class="o">=</span> <span class="n">worst_reponse</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Worst</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
+<span class="c1"># In[14]:</span>
+
+
+<span class="k">def</span> <span class="nf">plot_response</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">Best</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">param</span>
+    <span class="n">nbre</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Best</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">show</span><span class="p">):</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;triangular&#39;</span><span class="p">)</span>
+    <span class="n">XXR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nbre</span><span class="p">)</span>
+    <span class="n">XXB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nbre</span><span class="p">)</span>
+    <span class="n">RR</span><span class="p">,</span> <span class="n">BB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">XXR</span><span class="p">,</span> <span class="n">XXB</span><span class="p">)</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">])</span>
+    <span class="n">CS2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">BB</span><span class="p">,</span> <span class="n">RR</span><span class="p">,</span> <span class="n">Best</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">],</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+    <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+    <span class="c1">#cbar.set_ticks(np.arange(0.4, 3, 0.8))</span>
+    <span class="n">cbar</span><span class="o">.</span><span class="n">set_ticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.</span> <span class="p">,</span> <span class="mf">1.6</span><span class="p">]))</span>
+    <span class="n">cbar</span><span class="o">.</span><span class="n">set_ticklabels</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">])</span>
+    <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    
+    <span class="n">xA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">h</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">xR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">h</span><span class="o">-</span><span class="n">l</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">h</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">l</span><span class="p">)),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">xB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">l</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">l</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    plt.annotate(&quot;(A,B,R)=(&quot;+str(xA)+&quot;, &quot;+str(xB)+&quot;,&quot;+str(xR)+&quot;)&quot;,</span>
+<span class="sd">            xy=(xR, xB), xycoords=&#39;data&#39;,</span>
+<span class="sd">            xytext=(0.1, 0.9), textcoords=&#39;axes fraction&#39;,</span>
+<span class="sd">            arrowprops=dict(facecolor=&#39;black&#39;, shrink=0.05),</span>
+<span class="sd">            horizontalalignment=&#39;right&#39;, verticalalignment=&#39;top&#39;, fontsize = 15)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">save</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">folder</span><span class="o">+</span><span class="n">title</span><span class="o">+</span><span class="s2">&quot;.png&quot;</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">show</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="c1"># In[15]:</span>
+
+
+<span class="k">def</span> <span class="nf">plot_time_series</span><span class="p">(</span><span class="n">XXeq</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">XXb</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">XXeq_expected</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">param</span>
+    <span class="c1">#plt.figure(figsize = (10, 7))</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">show</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">XXeq</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">XXeq</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">XXeq_expected</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="c1">#print(&quot;expected time series!&quot;)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">XXeq_expected</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        
+    <span class="c1">#mmax = 1.1*np.max(np.max(XXeq))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span> <span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">XXb</span><span class="o">==</span><span class="n">h</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;purple&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Xb = high&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span> <span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">XXb</span><span class="o">==</span><span class="n">l</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Xb = low&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">h</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">l</span><span class="p">),</span> <span class="p">(</span><span class="n">h</span><span class="o">-</span><span class="n">l</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">h</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">l</span><span class="p">))],</span> <span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;1/(1+h)&quot;</span><span class="p">,</span> <span class="s2">&quot;l/(1+l)&quot;</span><span class="p">,</span> <span class="s2">&quot;(h-l)/((1+h)*(1+l))&quot;</span><span class="p">],</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+        
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;frequencies&quot;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">show</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span>
+
+
+<span class="c1"># In[16]:</span>
+
+
+<span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">x_mix</span><span class="p">,</span> <span class="n">x_other</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">u_A_expected</span><span class="p">(</span><span class="n">x_other</span><span class="p">,</span> <span class="n">param</span><span class="p">),</span> <span class="n">u_B_expected</span><span class="p">(</span><span class="n">x_other</span><span class="p">,</span> <span class="n">param</span><span class="p">),</span> <span class="n">u_R_expected</span><span class="p">(</span><span class="n">x_other</span><span class="p">,</span> <span class="n">param</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">x_mix</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+
+
+<span class="c1"># In[17]:</span>
+
+
+<span class="k">def</span> <span class="nf">plot_ess</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">nbre_points</span> <span class="o">=</span> <span class="mi">101</span><span class="p">,</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">param</span>
+    <span class="n">x_NE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">h</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">l</span><span class="p">),</span> <span class="p">(</span><span class="n">h</span><span class="o">-</span><span class="n">l</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">h</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">l</span><span class="p">))])</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">nbre_points</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">XXR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nbre_points</span><span class="p">)</span>
+    <span class="n">XXB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nbre_points</span><span class="p">)</span>
+    
+    <span class="n">Diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nbre_points</span><span class="p">,</span> <span class="n">nbre_points</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">Diff</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NAN</span>
+    <span class="k">for</span> <span class="n">i_r</span><span class="p">,</span> <span class="n">xR</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">XXR</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i_b</span><span class="p">,</span> <span class="n">xB</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">XXB</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">xR</span><span class="o">+</span><span class="n">xB</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">xA</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">xR</span><span class="o">-</span><span class="n">xB</span>
+                <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xA</span><span class="p">,</span> <span class="n">xB</span><span class="p">,</span> <span class="n">xR</span><span class="p">])</span>
+                <span class="n">Diff</span><span class="p">[</span><span class="n">i_r</span><span class="p">,</span> <span class="n">i_b</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">x_NE</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span> <span class="o">-</span> <span class="n">u</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">Diff</span><span class="p">[</span><span class="n">i_r</span><span class="p">,</span> <span class="n">i_b</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Diff</span><span class="p">[</span><span class="n">i_r</span><span class="p">,</span> <span class="n">i_b</span><span class="p">])</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">(</span><span class="n">x_NE</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">),</span> <span class="n">u</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">))</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">show</span><span class="p">):</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;triangular&#39;</span><span class="p">)</span>
+
+
+    <span class="n">RR</span><span class="p">,</span> <span class="n">BB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">XXR</span><span class="p">,</span> <span class="n">XXB</span><span class="p">)</span>
+    <span class="n">norm</span><span class="o">=</span><span class="n">colors</span><span class="o">.</span><span class="n">SymLogNorm</span><span class="p">(</span><span class="n">linthresh</span> <span class="o">=</span> <span class="mf">0.0000001</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">CS2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">BB</span><span class="p">,</span> <span class="n">RR</span><span class="p">,</span> <span class="n">Diff</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">LogLocator</span><span class="p">(</span><span class="n">base</span><span class="p">))</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">LogFormatterMathtext</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+    <span class="c1">#fmt.create_dummy_axis()</span>
+    <span class="c1">#plt.clabel(CS2, CS2.levels, fmt=fmt)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">],</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+    
+    <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+    <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;u(x_NE, X) - u(X, X)</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+    
+    <span class="c1">#title = &quot;alpha = &quot;+str(alpha)+&quot;, l=&quot;+str(l)+&quot;, h=&quot;+str(h)+&quot;, c=&quot;+str(c)</span>
+    <span class="c1">#plt.title(title)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">save</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">folder</span><span class="o">+</span><span class="n">title</span><span class="o">+</span><span class="s2">&quot;.png&quot;</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">show</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="c1"># ### Phase space</span>
+
+<span class="c1"># In[18]:</span>
+
+
+<span class="k">def</span> <span class="nf">plot_phase_space</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">show</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+    <span class="c1">#R = np.linspace(0, 1, 4)</span>
+    <span class="c1">#AA, BB, RR = np.meshgrid(A, B, R)</span>
+    <span class="n">RR</span><span class="p">,</span> <span class="n">BB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+    <span class="n">Da</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">RR</span><span class="p">)</span>
+    <span class="n">Db</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">BB</span><span class="p">)</span>
+    <span class="n">Dr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">BB</span><span class="p">)</span>
+    <span class="c1">#Dr = np.zeros_like(RR)</span>
+    <span class="c1">#C = np.linspace(0,1,121)[::1]</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">R</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">B</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">r</span><span class="o">+</span><span class="n">b</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">):</span>
+                <span class="c1">#for k, r in enumerate(R):</span>
+                    <span class="c1">#if(a+b+r&lt;=1):</span>
+                <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">-</span><span class="n">b</span><span class="o">-</span><span class="n">r</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">r</span><span class="p">])</span>
+                <span class="c1">#Da[j,i,k], Db[j,i,k], Dr[j,i,k] = replicator_dynamics_expected(X, param)</span>
+                <span class="n">Da</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">],</span> <span class="n">Db</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">],</span> <span class="n">Dr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">replicator_dynamics_expected</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">show</span><span class="p">):</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">BB</span><span class="p">,</span> <span class="n">RR</span><span class="p">,</span> <span class="n">Dr</span><span class="o">-</span><span class="n">Da</span><span class="o">/</span><span class="mi">2</span><span class="o">**</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">Db</span><span class="o">-</span><span class="n">Da</span><span class="o">/</span><span class="mi">2</span><span class="o">**</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="c1">#, cmap=&quot;rainbow&quot;)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">BB</span><span class="p">,</span> <span class="n">RR</span><span class="p">,</span> <span class="n">Dr</span><span class="o">-</span><span class="n">Da</span><span class="o">/</span><span class="mi">2</span><span class="o">**</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">Db</span><span class="o">-</span><span class="n">Da</span><span class="o">/</span><span class="mi">2</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span><span class="c1">#, cmap=&quot;rainbow&quot;)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">],</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+    
+    <span class="c1">#plt.plot([XXeq[-1,0]], [XXeq[-1,1]], [XXeq[-1,2]], &quot;*r&quot;)</span>
+    <span class="c1">#plt.legend()</span>
+    <span class="c1">#title = &quot;alpha = &quot;+str(alpha)+&quot;, l=&quot;+str(l)+&quot;, h=&quot;+str(h)+&quot;, c=&quot;+str(c)</span>
+    <span class="c1">#plt.title(title, fontsize = 20)</span>
+    <span class="c1">#plt.savefig(&quot;phase plane (3d)&quot;+title+&quot;.png&quot;)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">show</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span>
+
+
+<span class="c1"># ### Parameter space</span>
+
+<span class="c1"># In[19]:</span>
+
+
+<span class="k">def</span> <span class="nf">strategy</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">h</span><span class="p">),</span> <span class="n">l</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">l</span><span class="p">),</span> <span class="p">(</span><span class="n">h</span><span class="o">-</span><span class="n">l</span><span class="p">)</span><span class="o">/</span><span class="p">((</span><span class="mi">1</span><span class="o">+</span><span class="n">h</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">l</span><span class="p">))])</span>
+
+
+<span class="c1"># In[20]:</span>
+
+
+<span class="k">def</span> <span class="nf">plot_parameter_space</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">alpha</span><span class="p">,</span> <span class="n">lambd</span><span class="p">,</span> <span class="n">eta</span> <span class="o">=</span> <span class="n">param</span>
+    <span class="n">size_l</span> <span class="o">=</span> <span class="n">size_h</span> <span class="o">=</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">200</span>
+
+    <span class="n">nn</span> <span class="o">=</span> <span class="mi">4</span>
+
+    <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nn</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">size_l</span><span class="p">)</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nn</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">size_h</span><span class="p">)</span>
+
+    <span class="n">Strat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">size_l</span><span class="p">,</span> <span class="n">size_h</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span>
+    <span class="c1">#fig, ax = plt.subplots(figsize=(5, 5))</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">nn</span><span class="o">*</span><span class="n">size</span>
+    <span class="n">coef</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">nn</span><span class="o">*</span><span class="n">size</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">show</span><span class="p">):</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">sub</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;R&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i_l</span><span class="p">,</span> <span class="n">ll</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i_h</span><span class="p">,</span> <span class="n">hh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">H</span><span class="p">):</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">hh</span><span class="o">&gt;=</span><span class="n">ll</span><span class="p">):</span>
+                <span class="n">Strat</span><span class="p">[</span><span class="n">i_h</span><span class="p">,</span> <span class="n">i_l</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">strategy</span><span class="p">(</span><span class="n">ll</span><span class="p">,</span> <span class="n">hh</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">lambd</span><span class="o">*</span><span class="n">coef</span><span class="p">,</span> <span class="n">lambd</span><span class="o">*</span><span class="n">coef</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">eta</span><span class="o">*</span><span class="n">coef</span><span class="p">],</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">lambd</span><span class="o">*</span><span class="n">coef</span><span class="p">],</span> <span class="p">[</span><span class="n">eta</span><span class="o">*</span><span class="n">coef</span><span class="p">,</span><span class="n">eta</span><span class="o">*</span><span class="n">coef</span><span class="p">],</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">Strat</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+
+    <span class="c1">#plt.xlim(0, m/4)</span>
+    <span class="c1">#plt.ylim(0, m/4)</span>
+
+    <span class="c1">#plt.legend(loc = &quot;lower right&quot;, fontsize = 20)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span><span class="c1">#, rotation = 3.14/2)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="n">coef</span><span class="p">,</span> <span class="n">lambd</span><span class="o">*</span><span class="n">coef</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">lambd</span><span class="p">,</span> <span class="mi">2</span><span class="p">))],</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="n">coef</span><span class="p">,</span> <span class="n">eta</span><span class="o">*</span><span class="n">coef</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">eta</span><span class="p">,</span> <span class="mi">2</span><span class="p">))],</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
+    
+    <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">strategy</span><span class="p">(</span><span class="n">lambd</span><span class="p">,</span> <span class="n">eta</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s2">&quot;(A,B,R)=(&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;, &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">B</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;,&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">R</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;)&quot;</span><span class="p">,</span>
+            <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">lambd</span><span class="o">*</span><span class="n">coef</span><span class="p">,</span> <span class="n">eta</span><span class="o">*</span><span class="n">coef</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span>
+            <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s1">&#39;axes fraction&#39;</span><span class="p">,</span>
+            <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.05</span><span class="p">),</span>
+            <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+
+    <span class="n">sub</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">sub</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="k">return</span>
 </pre></div>
 
     </div>
@@ -13606,23 +14097,6 @@ div#notebook {
 </div>
 </div>
 </div>
-
-  
-
-  <div class="
-      cell border-box-sizing code_cell rendered">
-    <div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-  </div>
 
 
 
