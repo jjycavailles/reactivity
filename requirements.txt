@@ -3,3 +3,5 @@ ipywidgets
 nbinteract
 matplotlib
 pycalphad
+%pip install matplotlib -qqq
+%pip install pycalphad -qqq
