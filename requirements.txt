@@ -1,7 +1,6 @@
 numpy
 ipywidgets
 nbinteract
-io
 colorsys
 pickle
 IPython.display 
